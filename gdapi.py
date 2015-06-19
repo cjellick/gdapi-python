@@ -8,6 +8,7 @@ import hashlib
 import os
 import json
 import time
+import log
 try:
     import argcomplete
 except ImportError:
@@ -387,7 +388,9 @@ class Client(object):
 
     def create(self, type, *args, **kw):
         collection_url = self.schema.types[type].links.collection
-        return self._post(collection_url, data=self._to_dict(*args, **kw))
+        result = self._post(collection_url, data=self._to_dict(*args, **kw))
+        log.info('Created [%s] [%s]' % (result['id'], result['type']))
+        return result
 
     def delete(self, *args):
         for i in args:
